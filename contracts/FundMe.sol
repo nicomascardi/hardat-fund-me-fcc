@@ -46,25 +46,6 @@ contract FundMe {
         s_addressToAmountFunded[msg.sender] = msg.value;
     }
 
-    /*
-    function withdraw() public onlyOwner {
-        for (
-            uint256 funderIndex = 0;
-            funderIndex < s_funders.length;
-            funderIndex++
-        ) {
-            address funder = s_funders[funderIndex];
-            s_addressToAmountFunded[funder] = 0;
-        }
-
-        s_funders = new address[](0);
-
-        (bool callSucess, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
-        require(callSucess, "Call failed");
-    }
-*/
     function withdraw() public payable onlyOwner {
         address[] memory funders = s_funders;
 
@@ -92,13 +73,19 @@ contract FundMe {
         return s_funders[index];
     }
 
-    function getAddressToAmountFunded(
-        address funder
-    ) public view returns (uint256) {
+    function getAddressToAmountFunded(address funder)
+        public
+        view
+        returns (uint256)
+    {
         return s_addressToAmountFunded[funder];
     }
 
     function getPriceFeed() public view returns (AggregatorV3Interface) {
         return s_priceFeed;
+    }
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 }

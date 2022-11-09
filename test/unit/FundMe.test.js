@@ -147,4 +147,14 @@ const { developmentChains } = require("../../helper-hardhat-config");
                   assert.equal(deployer, contractDeployer);
               });
           });
+
+          describe("getBalance", async function(){
+            it("valid balance", async function() {
+                await fundMe.fund({value: sendValue});
+                const balance = await fundMe.getBalance();
+                const currentBalance =
+                      await fundMe.provider.getBalance(fundMe.address);
+                assert.equal(balance.toString(), currentBalance.toString());
+            })
+          })
       });
